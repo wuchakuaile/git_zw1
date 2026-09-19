@@ -1,11 +1,10 @@
-# TEXT2SQL Demo（Dify + DeepSeek + MySQL）
+<img width="1583" height="674" alt="image" src="https://github.com/user-attachments/assets/40974d79-6dfe-4978-931a-84c970177123" /># TEXT2SQL Demo（Dify + DeepSeek + MySQL）
 
 ## 这是什么
 输入自然语言，自动生成 SQL，连接 MySQL 返回查询结果。
 
 ## 效果演示
-[视频链接]
-[输入输出截图]
+【《Dify + DeepSeek 搭建 TEXT2SQL 演示》】 https://www.bilibili.com/video/BV1qset6bEyw/?share_source=copy_web&vd_source=0cebdb6ced3ef9faaadf22afc4f0c54d
 
 ## 架构
 用户输入 → Dify 工作流 → DeepSeek 生成 SQL → MySQL 执行 → 返回结果
