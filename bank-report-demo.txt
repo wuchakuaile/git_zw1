@@ -59,6 +59,7 @@ GROUP BY c.name, month
 ORDER BY month DESC, total_amount DESC
 LIMIT 20;
 
+
 ### 2. 大额交易预警
 筛选金额超过 40000 的交易，按金额降序排列。
 
