@@ -1,0 +1,110 @@
+# 银行交易报表分析案例
+
+模拟银行交易场景，基于 MySQL 演示数据工程中的核心能力：多表关联、存储过程、窗口函数、索引优化与数据校验。
+
+> 说明：本项目数据由 Python 脚本模拟生成，不涉及任何真实客户信息。
+
+## 技术栈
+
+- MySQL 8.x（Docker）
+- Python 3.x（Faker + PyMySQL）
+- DBeaver（客户端）
+- Git / GitHub
+
+## 数据模型
+
+### customer（客户表）
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| customer_id | INT | 客户ID，主键 |
+| name | VARCHAR(50) | 姓名 |
+| city | VARCHAR(50) | 城市 |
+| reg_date | DATE | 注册日期 |
+
+### account（账户表）
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| account_id | INT | 账户ID，主键 |
+| customer_id | INT | 客户ID |
+| account_type | VARCHAR(20) | 账户类型 |
+| balance | DECIMAL(15,2) | 余额 |
+| open_date | DATE | 开户日期 |
+
+### transaction（交易流水表）
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| trans_id | INT | 交易ID，主键 |
+| account_id | INT | 账户ID |
+| trans_date | DATETIME | 交易时间 |
+| amount | DECIMAL(15,2) | 金额 |
+| trans_type | VARCHAR(20) | 交易类型 |
+
+## 报表内容
+
+### 1. 客户月度交易汇总
+
+按客户和月份统计交易笔数与总金额。
+
+SELECT c.name,
+       DATE_FORMAT(t.trans_date, '%Y-%m') AS month,
+       COUNT(*) AS trans_count,
+       SUM(t.amount) AS total_amount
+FROM transaction t
+JOIN account a ON t.account_id = a.account_id
+JOIN customer c ON a.customer_id = c.customer_id
+GROUP BY c.name, month
+ORDER BY month DESC, total_amount DESC
+LIMIT 20;
+
+### 2. 大额交易预警
+筛选金额超过 40000 的交易，按金额降序排列。
+
+sql
+SELECT c.name, t.trans_date, t.amount, t.trans_type
+FROM transaction t
+JOIN account a ON t.account_id = a.account_id
+JOIN customer c ON a.customer_id = c.customer_id
+WHERE t.amount > 40000
+ORDER BY t.amount DESC
+LIMIT 20;
+
+
+### 3. 账户余额排名（窗口函数）
+按账户类型分组，对余额进行排名。
+
+sql
+SELECT c.name,
+       a.account_type,
+       a.balance,
+       RANK() OVER (PARTITION BY a.account_type ORDER BY a.balance DESC) AS rk
+FROM account a
+JOIN customer c ON a.customer_id = c.customer_id
+LIMIT 20;
+
+
+### 4. 存储过程：按月按城市统计
+创建存储过程，传入月份，返回各城市的客户数与交易总额。
+
+sql
+DELIMITER //
+CREATE PROCEDURE GetMonthlyReport(IN p_month VARCHAR(7))
+BEGIN
+    SELECT c.city,
+           COUNT(DISTINCT c.customer_id) AS customer_count,
+           SUM(t.amount) AS total_amount
+    FROM transaction t
+    JOIN account a ON t.account_id = a.account_id
+    JOIN customer c ON a.customer_id = c.customer_id
+    WHERE DATE_FORMAT(t.trans_date, '%Y-%m') = p_month
+    GROUP BY c.city;
+END //
+DELIMITER ;
+
+
+调用：
+sql
+CALL GetMonthlyReport('2026-09');
+
