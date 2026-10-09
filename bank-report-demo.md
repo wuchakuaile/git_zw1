@@ -1,4 +1,4 @@
-<img width="839" height="834" alt="image" src="https://github.com/user-attachments/assets/1f01e52b-6f4a-4fc0-9ac7-d3ae48b104a9" /># 银行交易报表分析案例
+# 银行交易报表分析案例
 
 模拟银行交易场景，基于 MySQL 演示数据工程中的核心能力：多表关联、存储过程、窗口函数、索引优化与数据校验。
 
@@ -58,7 +58,7 @@ JOIN customer c ON a.customer_id = c.customer_id
 GROUP BY c.name, month
 ORDER BY month DESC, total_amount DESC
 LIMIT 20;
-<img width="801" height="845" alt="image" src="https://github.com/user-attachments/assets/d5b5007c-dbb0-424e-9e78-24a375294001" />
+screenshots/report1.png
 
 ### 2. 大额交易预警
 筛选金额超过 40000 的交易，按金额降序排列。
