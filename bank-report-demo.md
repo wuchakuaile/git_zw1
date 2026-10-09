@@ -1,4 +1,4 @@
-# 银行交易报表分析案例
+<img width="839" height="834" alt="image" src="https://github.com/user-attachments/assets/1f01e52b-6f4a-4fc0-9ac7-d3ae48b104a9" /># 银行交易报表分析案例
 
 模拟银行交易场景，基于 MySQL 演示数据工程中的核心能力：多表关联、存储过程、窗口函数、索引优化与数据校验。
 
@@ -58,7 +58,7 @@ JOIN customer c ON a.customer_id = c.customer_id
 GROUP BY c.name, month
 ORDER BY month DESC, total_amount DESC
 LIMIT 20;
-
+<img width="801" height="845" alt="image" src="https://github.com/user-attachments/assets/d5b5007c-dbb0-424e-9e78-24a375294001" />
 
 ### 2. 大额交易预警
 筛选金额超过 40000 的交易，按金额降序排列。
@@ -71,6 +71,7 @@ JOIN customer c ON a.customer_id = c.customer_id
 WHERE t.amount > 40000
 ORDER BY t.amount DESC
 LIMIT 20;
+<img width="796" height="835" alt="image" src="https://github.com/user-attachments/assets/c50ac4dd-3638-4b49-afac-092565727e98" />
 
 
 ### 3. 账户余额排名（窗口函数）
@@ -84,6 +85,7 @@ SELECT c.name,
 FROM account a
 JOIN customer c ON a.customer_id = c.customer_id
 LIMIT 20;
+<img width="1136" height="840" alt="image" src="https://github.com/user-attachments/assets/e35de2d2-d73f-432c-8c9b-b76d9aa63066" />
 
 
 ### 4. 存储过程：按月按城市统计
